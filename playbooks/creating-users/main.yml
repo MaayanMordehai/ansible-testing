@@ -1,0 +1,14 @@
+---
+- hosts: all
+  remote_user: root
+  gather_facts: no
+  roles:
+    - role: "../../roles/create-user"
+      user_name: maayan
+      group: maayan
+      password: $6$huZE78hErINDTScm$E0qBcRCeI527q4EnO4Rpd34C6Z6CdGD4L6An.XU00.W8hnmJZxSbdWyaU9mnIV.KoEOCOrfQMhkFwREdlnrNN1
+    - role: "../../roles/create-user"
+      user_name: shiraz
+      group: shiraz
+      password: $6$su/gq7QMggJNNq.3$OxxqNoSzay7ZG589E1uFkiAwHJ5Xfdct79.fLxkFksy5cQwx9uYDUvErJDQKbg6mCSlZp4qHyQrIOHOW1LWeP0
+...
