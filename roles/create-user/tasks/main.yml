@@ -1,0 +1,12 @@
+---
+- name: "ensure the group {{ group }} exists"
+  group:
+    name: "{{ group }}"
+    state: present
+- name: "create user {{ user_name }} in the group"
+  user:
+    name: "{{ user_name }}"
+    password: "{{ password }}"
+    group: "{{ group }}"
+    shell: "{{ shell }}"
+...
