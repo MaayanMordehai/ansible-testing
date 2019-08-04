@@ -1,15 +1,20 @@
----
-- name: "ensure the group {{ group }} exists"
+
+- name: "ensure the groups exists"
   group:
-    name: "{{ group }}"
+    name: "{{ item.pri_group }}"
     state: present
-- name: "create user {{ user_name }} in the group"
+  with_items: "{{ users }}"
+  loop_control:
+    label: "{{ item.pri_group }}"
+
+
+- name: "creating users" 
   user:
-    name: "{{ user_name }}"
-    password: "{{ password | password_hash('sha512') }}"
-    group: "{{ group }}"
-    shell: "{{ shell }}"
-#- name: "debugging user creation {{ password }} "
-#  debug:
-#    var: password
-...
+    name: "{{ item.user_name }}"
+    password: "{{ item.passwd | password_hash('sha512') }}"
+    group: "{{ item.pri_group }}"
+    shell: "{{ item.shl }}"
+  with_items: "{{ users }}"
+  loop_control:
+    label: "{{ item.user_name }}"
+
