@@ -4,9 +4,7 @@
   gather_facts: no
   roles:
     - role: "../../roles/create-user"
-      user_name: "{{ user_name }}"
-      group: "{{ group }}"
-      password: $6$k/a.Rbly64uUe51S$W.Vs9qP55Rt2QBXZyPteIQ3JVgnwxNyGfIzy5/nA1dDzu8vVrnql1PncdwvsiK1ZJTGDTllMezWB8WxvPEuT90 
+      password: "{{ passwd }}"
     - role: "../../roles/making-user-sudoer"
-      user_name: "{{ user_name }}"
+#      user_name: "{{ user_name }}"
 ...

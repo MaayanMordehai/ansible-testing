@@ -6,7 +6,10 @@
 - name: "create user {{ user_name }} in the group"
   user:
     name: "{{ user_name }}"
-    password: "{{ password }}"
+    password: "{{ password | password_hash('sha512') }}"
     group: "{{ group }}"
     shell: "{{ shell }}"
+#- name: "debugging user creation {{ password }} "
+#  debug:
+#    var: password
 ...
