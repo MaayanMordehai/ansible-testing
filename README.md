@@ -13,3 +13,7 @@ To get a vault value:
 ```
 ansible-vault encrypt_string 'password' --name 'passwd' 
 ```
+## do-task-on-non-run-host
+
+This was created as a test to make sure deligate_to can be use to run on machines that are not on the hosts of the playbook. 
+it can.

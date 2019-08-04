@@ -1,0 +1,7 @@
+- name: chown file
+  file:
+    path: /tmp/foo
+    owner: maayan
+    group: myn_group
+    mode: '0777'
+  delegate_to: myn-tst-lnx-1
