@@ -9,6 +9,6 @@
   lineinfile:
     path: "{{ tuned_profile_dir }}/tuned.conf"
     insertafter: '^\[sysctl\]$'
-    line: "nr.hugepages = 3"
-    regexp: "^nr.hugepages"
+    line: "vm.nr_hugepages = {{ num_of_hugepages }}"
+    regexp: "^vm.nr_hugepages"
 ...
