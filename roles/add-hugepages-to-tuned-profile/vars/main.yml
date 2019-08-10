@@ -1,4 +1,4 @@
 ---
 hugepage_size_kb: 2048
-num_of_hugepages: "{{ (ram_to_hugepages_mb*1024/hugepage_size_kb)|round(0,'ceil')|int }}"
+num_of_hugepages: "{{ (ram_to_hugepages_kb/hugepage_size_kb+2)|round(0,'ceil')|int }}"
 ...
