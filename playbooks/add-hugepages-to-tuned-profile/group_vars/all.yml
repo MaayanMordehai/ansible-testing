@@ -1,6 +1,9 @@
 ---
 
-tuned_profile_dir: /usr/lib/tuned/oracle
+tuned_profiles_dir: /usr/lib/tuned
+profile_name: oracle
 ram_to_hugepages_kb: 5120 
+make_profile_active: false
+reboot_after_change: true
 
 ...
