@@ -1,0 +1,7 @@
+---
+- hosts: myn-ans-lnx-1
+  remote_user: root 
+  gather_facts: no
+  roles:
+    - role: add-hugepages-to-tuned-profile
+...

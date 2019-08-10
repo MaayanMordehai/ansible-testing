@@ -1,0 +1,6 @@
+---
+
+tuned_profile_dir: /usr/lib/tuned/oracle
+ram_to_hugepages_mb: 6
+
+...

@@ -1,0 +1,14 @@
+---
+- name: making sure sysctl section exists
+  lineinfile:
+    path: "{{ tuned_profile_dir }}/tuned.conf"
+    line: '[sysctl]'
+    state: present
+
+- name: adding the hugepages variable to tuned profile
+  lineinfile:
+    path: "{{ tuned_profile_dir }}/tuned.conf"
+    insertafter: '^\[sysctl\]$'
+    line: "nr.hugepages = 3"
+    regexp: "^nr.hugepages"
+...
