@@ -1,0 +1,14 @@
+
+
+
+- name: getting vars to variable
+  command: cat /tmp/test
+  register: maayan_list
+
+- debug:
+    var: maayan_list
+
+- name: checking in loop
+  debug:
+    msg: "lalal {{ item }}"
+  with_items: "{{ maayan_list.stdout_lines }}"
