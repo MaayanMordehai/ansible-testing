@@ -1,0 +1,14 @@
+
+db_version: '12.2.0.1'
+
+opatch_latest_version: '0'
+
+opatch_files_location: /tmp
+
+opatch_files:
+  - { file_name: OPatch.zip, db_version: '12.2.0.1', opatch_version: '12.2.0.1.6' }
+  - { file_name: p6880880_122010_Linux-x86-64.zip, db_version: '12.2.0.1', opatch_version: '12.2.0.1.17' }
+
+
+homes_to_update:
+  - { oracle_home: "/oracle/dbs/{{ db_version | replace('.', '') }}", owner: oracle, group: oinstall}

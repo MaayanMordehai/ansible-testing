@@ -1,0 +1,25 @@
+
+- name: saving opatch original in the side
+  command: "mv {{ oracle_home }}/OPatch {{ oracle_home }}/OPatch-old-ans creates={{ oracle_home }}/OPatch-old-ans removes={{ oracle_home }}/OPatch"
+
+- name: unzipping new opatch in the right location
+  unarchive:
+    src: "{{ opatch_files_location }}/{{ opatch_file.file_name }}"
+    remote_src: yes
+    dest: "{{ oracle_home }}"
+    owner: "{{ ora_user }}"
+    group: "{{ ora_group }}"
+    mode: '755'
+
+- name: checking no errors for new opatch by running opatch version
+  command: "{{ oracle_home }}/OPatch/opatch version"
+
+- name: checking no errors for new opatch by running opatch lsinventory
+  command: "{{ oracle_home }}/OPatch/opatch lsinventory"
+  become: yes
+  become_user: "{{ ora_user }}"
+
+- name: deleting opatch old copy
+  file:
+    path: "{{ oracle_home }}/OPatch-old-ans"
+    state: absent

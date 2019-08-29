@@ -1,0 +1,28 @@
+- hosts: myn-tst-lnx-1
+  remote_user: root
+  gather_facts: no
+  tasks:
+    - name: get latest opatch for the version
+      set_fact: 
+        opatch_latest_version: "{{ item.opatch_version }}"
+      when: (db_version is version(item.db_version, 'eq')) and (opatch_latest_version is version(item.opatch_version, 'lt'))
+      loop: "{{ opatch_files }}"
+
+    - name: get file details
+      set_fact: 
+        opatch_file: "{{ item }}"
+      when: db_version is version(item.db_version, 'eq') and opatch_latest_version is version(item.opatch_version, 'eq')
+      loop: "{{ opatch_files }}"
+
+    - include_role:
+        name: update-opatch
+      vars:
+        oracle_home: "{{ item.oracle_home }}"
+        ora_user: "{{ item.owner }}"
+        ora_group: "{{ item.group }}"
+      when: opatch_file is defined
+      loop: "{{ homes_to_update }}"
+
+    - fail:
+        msg: check your parameters
+      when: opatch_file is undefined 
