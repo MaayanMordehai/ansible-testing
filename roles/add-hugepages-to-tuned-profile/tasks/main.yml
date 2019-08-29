@@ -1,16 +1,23 @@
 ---
-- name: making sure sysctl section exists
-  lineinfile:
-    path: "{{ tuned_profiles_dir }}/{{ profile_name }}/tuned.conf"
-    line: '[sysctl]'
-    state: present
+#- name: making sure sysctl section exists
+#  lineinfile:
+#    path: "{{ tuned_profiles_dir }}/{{ profile_name }}/tuned.conf"
+#    line: '[sysctl]'
+#    state: present
 
-- name: adding the hugepages variable to tuned profile
-  lineinfile:
+#- name: adding the hugepages variable to tuned profile
+#  lineinfile:
+#    path: "{{ tuned_profiles_dir }}/{{ profile_name }}/tuned.conf"
+#    insertafter: '^\[sysctl\]$'
+#    line: "vm.nr_hugepages = {{ num_of_hugepages }}"
+#    regexp: "^vm.nr_hugepages"
+
+- name: adding the hugepages to tuned profile
+  ini_file:
     path: "{{ tuned_profiles_dir }}/{{ profile_name }}/tuned.conf"
-    insertafter: '^\[sysctl\]$'
-    line: "vm.nr_hugepages = {{ num_of_hugepages }}"
-    regexp: "^vm.nr_hugepages"
+    section: sysctl
+    option: vm.nr_hugepages
+    value: "{{ num_of_hugepages }}"
 
 - name: making the profile active
   command: "/usr/sbin/tuned-adm profile {{ profile_name }}"
