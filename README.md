@@ -32,5 +32,5 @@ Adding hugepages parameter to the tuned profile given.
 
 ## update-opatch
 
-Updating the opatch (oracle database) to the latest opatch version in the given path in the given oracle home.
+Updating the opatch (oracle database) to the latest opatch version in the given path for the given oracle home.
 
