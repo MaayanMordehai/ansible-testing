@@ -17,3 +17,9 @@
         filter: ansible_local
     - debug:
         var: ansible_local
+
+    - name: remove the custom fact
+      file:
+        path: "/etc/ansible/facts.d"
+        state: absent
+     
