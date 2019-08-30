@@ -15,22 +15,12 @@
          "{{ systemd_path }}/{{ systemd_depended_service_name }}" 
   register: After_value
 
-- name: make sure no errors
-  fail:
-    msg: "something went wrong with getting the After parameter in the Unit section. error: {{ After_value.stderr }}"
-  when: After_value.stderr
-
 - name: get the Requires value in the Unit block on service file
   command: >
          awk -F ' *= *' '{ if ($1 ~ /^\[/) section=$1;
          else if ($1 ~ /^Requires/ && section ~ /^\[Unit\]$/ ) print $2 }'
          "{{ systemd_path }}/{{ systemd_depended_service_name }}"
   register: Requires_value
-
-- name: make sure no errors
-  fail:
-    msg: "something went wrong with getting the Requires parameter in the Unit section. error: {{ After_value.stderr }}"
-  when: Requires_value.stderr 
 
 - name: "setting the new value for After"
   ini_file:
@@ -51,6 +41,6 @@
     option: Requires
     no_extra_spaces: yes
     value: "{{ systemd_independ_file_name + ' ' + Requires_value.stdout }}"
-  when: systemd_independ_file_name not in Requires_value.stdout.split('#')[0]
+  hen: systemd_independ_file_name not in Requires_value.stdout.split('#')[0]
   notify: reload systemd
 
