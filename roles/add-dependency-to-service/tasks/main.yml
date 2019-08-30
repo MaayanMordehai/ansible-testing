@@ -41,6 +41,6 @@
     option: Requires
     no_extra_spaces: yes
     value: "{{ systemd_independ_file_name + ' ' + Requires_value.stdout }}"
-  hen: systemd_independ_file_name not in Requires_value.stdout.split('#')[0]
+  when: systemd_independ_file_name not in Requires_value.stdout.split('#')[0]
   notify: reload systemd
 
