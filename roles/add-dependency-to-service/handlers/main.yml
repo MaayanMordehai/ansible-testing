@@ -1,0 +1,4 @@
+- name: reload systemd
+  systemd:
+    name: "{{ systemd_depended_service_name }}"
+    daemon_reload: yes

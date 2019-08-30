@@ -1,0 +1,64 @@
+- name: make sure the file exists
+  stat:
+    path: "{{ systemd_path }}/{{ systemd_depended_service_name }}"
+  register: systemd_file_info
+
+- name: fail when file not exists
+  fail:
+    msg: "the {{ systemd_path }}/{{ systemd_depended_service_name }} does not exists"
+  when: not systemd_file_info.stat.exists
+
+- name: get the After value in the Unit block on service file
+  shell: >
+         awk -F ' *= *' '{ if ($1 ~ /^\[/) section=$1;
+         else if ($1 ~ /^After/ && section ~ /^\[Unit\]$/ ) print $2 }'
+         "{{ systemd_path }}/{{ systemd_depended_service_name }}" | cut -d'#' -f1
+  register: After_value
+
+- name: make sure no errors
+  fail:
+    msg: "something went wrong with getting the After parameter in the Unit section. error: {{ After_value.stderr }}"
+  when: After_value.stderr
+
+- name: get the Requires value in the Unit block on service file
+  shell: >
+         awk -F ' *= *' '{ if ($1 ~ /^\[/) section=$1;
+         else if ($1 ~ /^Requires/ && section ~ /^\[Unit\]$/ ) print $2 }'
+         "{{ systemd_path }}/{{ systemd_depended_service_name }}" | cut -d'#' -f1
+  register: Requires_value
+
+- name: make sure no errors
+  fail:
+    msg: "something went wrong with getting the Requires parameter in the Unit section. error: {{ After_value.stderr }}"
+  when: Requires_value.stderr 
+
+#- name: setting the new value for After
+#  set_fact:
+#    Unit_After_new: "{{ After_value.stdout + ' ' + systemd_independ_file_name }}"
+#  when: systemd_independ_file_name not in After_value.stdout
+
+#- name: setting the new value for Requires
+#  set_fact: 
+#    Unit_Requires_new: "{{ Requires_value.stdout + ' ' + systemd_independ_file_name }}"
+#  when: systemd_independ_file_name not in Requires_value.stdout
+
+- name: "setting the new value for After"
+  ini_file:
+    path: "{{ systemd_path }}/{{ systemd_depended_service_name }}"
+    section: Unit
+    option: After
+    no_extra_spaces: yes
+    value: "{{ After_value.stdout + ' ' + systemd_independ_file_name }}"
+  when: systemd_independ_file_name not in After_value.stdout
+  notify: reload systemd
+
+- name: "setting the new value for Requires "
+  ini_file:
+    path: "{{ systemd_path }}/{{ systemd_depended_service_name }}"
+    section: Unit
+    option: Requires
+    no_extra_spaces: yes
+    value: "{{ Requires_value.stdout + ' ' + systemd_independ_file_name }}"
+  when: systemd_independ_file_name not in Requires_value.stdout
+  notify: reload systemd
+

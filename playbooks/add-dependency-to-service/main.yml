@@ -1,0 +1,5 @@
+- hosts: myn-tst-lnx-1
+  remote_user: root
+  gather_facts: no
+  roles:
+    - role: "../roles/add-dependency-to-service"
