@@ -2,12 +2,7 @@
 
 export GRID_HOME={{ grid_home }}
 
-dbs=`${GRID_HOME}/bin/srvctl config database`
-if [ $? != 0 ];
-then
-    echo "something went worng check cluster is up"
-    exit 1
-fi
+dbs={{ dbs }}
 
 for db_name in dbs
 do
