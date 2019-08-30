@@ -32,16 +32,6 @@
     msg: "something went wrong with getting the Requires parameter in the Unit section. error: {{ After_value.stderr }}"
   when: Requires_value.stderr 
 
-#- name: setting the new value for After
-#  set_fact:
-#    Unit_After_new: "{{ After_value.stdout + ' ' + systemd_independ_file_name }}"
-#  when: systemd_independ_file_name not in After_value.stdout
-
-#- name: setting the new value for Requires
-#  set_fact: 
-#    Unit_Requires_new: "{{ Requires_value.stdout + ' ' + systemd_independ_file_name }}"
-#  when: systemd_independ_file_name not in Requires_value.stdout
-
 - name: "setting the new value for After"
   ini_file:
     path: "{{ systemd_path }}/{{ systemd_depended_service_name }}"
