@@ -1,0 +1,21 @@
+#!/bin/bash
+
+export GRID_HOME={{ grid_home }}
+
+dbs=`${GRID_HOME}/bin/srvctl config database`
+if [ $? != 0 ];
+then
+    echo "something went worng check cluster is up"
+    exit 1
+fi
+
+for db_name in dbs
+do
+    export ORACLE_HOME=`${GRID_HOME}/bin/srvctl config database -db ${db_name} | grep "Oracle home" | cut -d'=' -f2 | sed "s/ //g"`
+    oracle_sid=``
+
+    echo "{ db_name: ${db_name}, "
+done
+
+
+
