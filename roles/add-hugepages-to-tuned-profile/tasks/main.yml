@@ -14,6 +14,7 @@
 
 - name: adding the hugepages to tuned profile
   ini_file:
+    create: no
     path: "{{ tuned_profiles_dir }}/{{ profile_name }}/tuned.conf"
     section: sysctl
     option: vm.nr_hugepages

@@ -1,5 +1,5 @@
 ---
-- hosts: myn-ans-lnx-1
+- hosts: myn-tst-lnx-1
   remote_user: root 
   gather_facts: no
   roles:

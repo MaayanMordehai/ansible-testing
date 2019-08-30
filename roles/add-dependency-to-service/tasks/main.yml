@@ -34,6 +34,7 @@
 
 - name: "setting the new value for After"
   ini_file:
+    create: no
     path: "{{ systemd_path }}/{{ systemd_depended_service_name }}"
     section: Unit
     option: After
@@ -44,6 +45,7 @@
 
 - name: "setting the new value for Requires "
   ini_file:
+    create: no
     path: "{{ systemd_path }}/{{ systemd_depended_service_name }}"
     section: Unit
     option: Requires
