@@ -1,0 +1,19 @@
+- hosts: all
+  remote_user: root
+  gather_facts: no 
+  tasks:
+    - name: "Create custom fact directory"
+      file:
+        path: "/etc/ansible/facts.d"
+        state: "directory"
+
+    - name: "Insert custom fact file"
+      copy:
+        src: maayan.fact
+        dest: /etc/ansible/facts.d/custom.fact
+        mode: '755'
+
+    - setup:
+        filter: ansible_local
+    - debug:
+        var: ansible_local

@@ -1,0 +1,6 @@
+#!/bin/bash
+echo "{ \"oracle_sid\": \"myn\", \"oracle_home\": \"/oracle/dbs/12201\" }"
+#echo "[myfacts]"
+#echo "oracle_home=/oracle/dbs/12201"
+#echo "oracle_sid=myn"
+

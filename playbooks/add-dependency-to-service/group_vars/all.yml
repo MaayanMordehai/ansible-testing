@@ -1,3 +1,3 @@
 systemd_path: /etc/systemd/system
-systemd_depended_service_name: oracle-ohasd.service 
+systemd_depended_service_name: oracle-tfa.service 
 systemd_independ_file_name: tuned.service
