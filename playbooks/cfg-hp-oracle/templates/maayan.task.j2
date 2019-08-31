@@ -6,6 +6,7 @@ dbs={{ dbs }}
 
 for db_name in dbs
 do
+    echo "[${db_name}]"
     db_info=`${GRID_HOME}/bin/srvctl config database -db ${db_name}`
     if [ $? != 0 ];
     then
@@ -19,9 +20,7 @@ do
         echo "problem getting sid on db ${db_name}"
         exit 1
     fi
-
-    echo "{ db_name: ${db_name}, sid: ${ORACLE_SID}, oracle_home: ${ORACLE_HOME} }"
+    echo "oracle_home=${ORACLE_HOME}"
+    echo "sid=${ORACLE_SID}"
 done
-
-
 
