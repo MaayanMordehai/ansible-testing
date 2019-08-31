@@ -8,39 +8,25 @@
     msg: "the {{ systemd_path }}/{{ systemd_depended_service_name }} does not exists"
   when: not systemd_file_info.stat.exists
 
-- name: get the After value in the Unit block on service file
+- name: get the parameters After and Requires values in the Unit block on service file
   command: >
          awk -F ' *= *' '{ if ($1 ~ /^\[/) section=$1;
-         else if ($1 ~ /^After/ && section ~ /^\[Unit\]$/ ) print $2 }'
-         "{{ systemd_path }}/{{ systemd_depended_service_name }}" 
-  register: After_value
-
-- name: get the Requires value in the Unit block on service file
-  command: >
-         awk -F ' *= *' '{ if ($1 ~ /^\[/) section=$1;
-         else if ($1 ~ /^Requires/ && section ~ /^\[Unit\]$/ ) print $2 }'
+         else if ($1 ~ /^{{ item }}/ && section ~ /^\[Unit\]$/ ) print $2 }'
          "{{ systemd_path }}/{{ systemd_depended_service_name }}"
-  register: Requires_value
+  register: Unit_params
+  loop: [ After, Requires ]
 
-- name: "setting the new value for After"
+- name: setting the new value for the parameters given
   ini_file:
     create: no
     path: "{{ systemd_path }}/{{ systemd_depended_service_name }}"
     section: Unit
-    option: After
+    option: "{{ item.item }}"
     no_extra_spaces: yes
-    value: "{{ systemd_independ_file_name + ' ' + After_value.stdout }}"
-  when: systemd_independ_file_name not in After_value.stdout.split('#')[0]
+    value: "{{ systemd_independ_file_name + ' ' + item.stdout }}"
+  when: systemd_independ_file_name not in item.stdout.split('#')[0]
   notify: reload systemd
-
-- name: "setting the new value for Requires "
-  ini_file:
-    create: no
-    path: "{{ systemd_path }}/{{ systemd_depended_service_name }}"
-    section: Unit
-    option: Requires
-    no_extra_spaces: yes
-    value: "{{ systemd_independ_file_name + ' ' + Requires_value.stdout }}"
-  when: systemd_independ_file_name not in Requires_value.stdout.split('#')[0]
-  notify: reload systemd
+  loop: "{{ Unit_params.results }}"
+  loop_control:
+    label: "{{ { \"parameter\": item.item, \"old_value\": item.stdout } }}"
 
