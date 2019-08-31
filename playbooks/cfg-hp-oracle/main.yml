@@ -1,0 +1,41 @@
+- hosts: all
+  remote_user: root
+  gather_facts: no 
+  tasks:
+    - name: getting dbs on the machine
+      command: "{{ grid_home }}/bin/srvctl config database"
+      register: dbs_output
+      when: dbs == 'all'
+
+    - name: define dbs as the databases list
+      set_fact:
+        dbs: "{{ dbs_output.stdout_lines }}"
+      when: dbs == 'all'
+
+    - name: "Create custom fact directory"
+      file:
+        path: "/etc/ansible/facts.d"
+        state: "directory"
+
+    - name: "Insert custom fact file"
+      template:
+        src: dbs_info.fact.j2
+        dest: "/etc/ansible/facts.d/dbs_info.fact"
+
+    - setup:
+        filter: ansible_local
+    - debug:
+        var: ansible_local
+
+    - name: remove the custom fact
+      file:
+        path: "/etc/ansible/facts.d"
+        state: absent
+
+    - name: config hugepages on dbs
+      import_role: 
+        name: cfg-hp-oracle
+        vars:
+          dbs: ansible_local.dbs_info
+
+

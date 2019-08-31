@@ -1,0 +1,27 @@
+#!/bin/bash
+
+export GRID_HOME={{ grid_home }}
+
+dbs={{ dbs }}
+
+for db_name in dbs
+do
+    db_info=`${GRID_HOME}/bin/srvctl config database -db ${db_name}`
+    if [ $? != 0 ];
+    then
+        echo "problem getting info on db ${db_name}"
+        exit 1
+    fi
+    export ORACLE_HOME=`echo ${db_info} | grep "Oracle home" | cut -d'=' -f2 | sed "s/ //g"`
+    export ORACLE_SID=`${ORACLE_HOME}/bin/srvctl status instance -db ${db_name} -n ${HOSTNAME}`
+    if [ $? != 0 ];
+    then
+        echo "problem getting sid on db ${db_name}"
+        exit 1
+    fi
+
+    echo "{ db_name: ${db_name}, sid: ${ORACLE_SID}, oracle_home: ${ORACLE_HOME} }"
+done
+
+
+

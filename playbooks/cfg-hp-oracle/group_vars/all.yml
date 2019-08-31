@@ -1,0 +1,4 @@
+grid_home: /oracle/gi12201
+dbs: all
+ora_user: oracle
+grid_user: oragrid

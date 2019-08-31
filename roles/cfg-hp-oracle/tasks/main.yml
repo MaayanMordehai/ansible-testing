@@ -1,0 +1,5 @@
+
+- name: "setting the use_large_pages parameter on the databases to true"
+  script: "change_parameter.sh {{ item.oracle_home }} {{ item.sid }} use_large_pages ONLY both"
+  loop: "{{ dbs }}"
+
