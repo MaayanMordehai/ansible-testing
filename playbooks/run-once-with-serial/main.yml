@@ -1,0 +1,15 @@
+- hosts: "{{ cluster_name }}"
+  remote_user: root
+  gather_facts: no
+  serial: 1
+  order: sorted
+  tasks:
+    - debug: 
+        var: ansible_play_hosts  
+
+    - assert:
+        that:
+          - ansible_play_hosts is defined
+        fail_msg: doing assert
+      when: inventory_hostname == (ansible_play_hosts|sort())[0]
+
